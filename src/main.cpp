@@ -1831,7 +1831,6 @@ CAmount GetSeeSaw(const CAmount& blockValue, int nMasternodeCount, int nHeight)
 			ret = ret * 1.01;
 			nCounter = nCounter + 1;
 		}
-        }
     }
     return ret;
 }
