@@ -1774,7 +1774,7 @@ int64_t GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
     if (nHeight == 0) {
-        nSubsidy = 60001 * COIN;
+        nSubsidy = 10000 * COIN;
     } else if (nHeight <= 1000 && nHeight > 0) {
         nSubsidy = 1000 * COIN;
     } else if (nHeight <= 10000 && nHeight > 1000) {
@@ -1813,8 +1813,6 @@ CAmount GetSeeSaw(const CAmount& blockValue, int nMasternodeCount, int nHeight)
 
     int64_t nMoneySupply = chainActive.Tip()->nMoneySupply;
     int64_t mNodeCoins = nMasternodeCount * 1000 * COIN;
-	int64_t nMasternodeBonus = nMasternodeCount / 100;
-	int64_t nCounter = 0;
     // Use this log to compare the masternode count for different clients
     //LogPrintf("Adjusting seesaw at height %d with %d masternodes (without drift: %d) at %ld\n", nHeight, nMasternodeCount, nMasternodeCount - Params().MasternodeCountDrift(), GetTime());
 
@@ -1827,9 +1825,8 @@ CAmount GetSeeSaw(const CAmount& blockValue, int nMasternodeCount, int nHeight)
         ret = 0;
     } else {
 		ret = 1;
-		while (nCounter <= nMasternodeCount) {
+		for (int nCounter = 0; nCounter <= nMasternodeCount; nCounter += 1) {
 			ret = ret * 1.01;
-			nCounter = nCounter + 1;
 		}
     }
     return ret;
