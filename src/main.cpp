@@ -1826,8 +1826,8 @@ CAmount GetSeeSaw(const CAmount& blockValue, int nMasternodeCount, int nHeight)
     if (mNodeCoins == 0) {
         ret = 0;
     } else {
-		ret = 1
-		while nCounter < nMasternodeCount {
+		ret = 1;
+		while (nCounter <= nMasternodeCount) {
 			ret = ret * 1.01;
 			nCounter = nCounter + 1;
 		}
