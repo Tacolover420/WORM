@@ -1,11 +1,11 @@
 //
-// Copyright (c) 2015-2018 The PIVX developers
+// Copyright (c) 2015-2018 The WORM developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 //
 
-#ifndef PIVX_LIGHTZPIVTHREAD_H
-#define PIVX_LIGHTZPIVTHREAD_H
+#ifndef WORM_LIGHTZWORMTHREAD_H
+#define WORM_LIGHTZWORMTHREAD_H
 
 #include <atomic>
 #include "genwit.h"
@@ -43,29 +43,29 @@ public:
 
     bool addWitWork(CGenWit wit) {
         if (!isWorkerRunning) {
-            LogPrintf("%s not running trying to add wit work \n", "pivx-light-thread");
+            LogPrintf("%s not running trying to add wit work \n", "worm-light-thread");
             return false;
         }
         requestsQueue.push(wit);
         return true;
     }
 
-    void StartLightZpivThread(boost::thread_group& threadGroup) {
-        LogPrintf("%s thread start\n", "pivx-light-thread");
-        threadIns = boost::thread(boost::bind(&CLightWorker::ThreadLightZPIVSimplified, this));
+    void StartLightZwormThread(boost::thread_group& threadGroup) {
+        LogPrintf("%s thread start\n", "worm-light-thread");
+        threadIns = boost::thread(boost::bind(&CLightWorker::ThreadLightZWORMSimplified, this));
     }
 
-    void StopLightZpivThread() {
+    void StopLightZwormThread() {
         threadIns.interrupt();
-        LogPrintf("%s thread interrupted\n", "pivx-light-thread");
+        LogPrintf("%s thread interrupted\n", "worm-light-thread");
     }
 
 private:
 
-    void ThreadLightZPIVSimplified();
+    void ThreadLightZWORMSimplified();
 
     void rejectWork(CGenWit& wit, int blockHeight, uint32_t errorNumber);
 
 };
 
-#endif //PIVX_LIGHTZPIVTHREAD_H
+#endif //WORM_LIGHTZWORMTHREAD_H

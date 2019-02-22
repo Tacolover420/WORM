@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2018 The PIVX developers
+// Copyright (c) 2015-2018 The WORM developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -23,8 +23,8 @@
 #include "validationinterface.h"
 #include "wallet_ismine.h"
 #include "walletdb.h"
-#include "zpivwallet.h"
-#include "zpivtracker.h"
+#include "zwormwallet.h"
+#include "zwormtracker.h"
 
 #include <algorithm>
 #include <map>
@@ -86,30 +86,30 @@ enum AvailableCoinsType {
     ALL_COINS = 1,
     ONLY_DENOMINATED = 2,
     ONLY_NOT10000IFMN = 3,
-    ONLY_NONDENOMINATED_NOT10000IFMN = 4, // ONLY_NONDENOMINATED and not 10000 PIV at the same time
+    ONLY_NONDENOMINATED_NOT10000IFMN = 4, // ONLY_NONDENOMINATED and not 10000 WORM at the same time
     ONLY_10000 = 5,                        // find masternode outputs including locked ones (use with caution)
     STAKABLE_COINS = 6                          // UTXO's that are valid for staking
 };
 
-// Possible states for zPIV send
+// Possible states for zWORM send
 enum ZerocoinSpendStatus {
-    ZPIV_SPEND_OKAY = 0,                            // No error
-    ZPIV_SPEND_ERROR = 1,                           // Unspecified class of errors, more details are (hopefully) in the returning text
-    ZPIV_WALLET_LOCKED = 2,                         // Wallet was locked
-    ZPIV_COMMIT_FAILED = 3,                         // Commit failed, reset status
-    ZPIV_ERASE_SPENDS_FAILED = 4,                   // Erasing spends during reset failed
-    ZPIV_ERASE_NEW_MINTS_FAILED = 5,                // Erasing new mints during reset failed
-    ZPIV_TRX_FUNDS_PROBLEMS = 6,                    // Everything related to available funds
-    ZPIV_TRX_CREATE = 7,                            // Everything related to create the transaction
-    ZPIV_TRX_CHANGE = 8,                            // Everything related to transaction change
-    ZPIV_TXMINT_GENERAL = 9,                        // General errors in MintToTxIn
-    ZPIV_INVALID_COIN = 10,                         // Selected mint coin is not valid
-    ZPIV_FAILED_ACCUMULATOR_INITIALIZATION = 11,    // Failed to initialize witness
-    ZPIV_INVALID_WITNESS = 12,                      // Spend coin transaction did not verify
-    ZPIV_BAD_SERIALIZATION = 13,                    // Transaction verification failed
-    ZPIV_SPENT_USED_ZPIV = 14,                      // Coin has already been spend
-    ZPIV_TX_TOO_LARGE = 15,                          // The transaction is larger than the max tx size
-    ZPIV_SPEND_V1_SEC_LEVEL                         // Spend is V1 and security level is not set to 100
+    ZWORM_SPEND_OKAY = 0,                            // No error
+    ZWORM_SPEND_ERROR = 1,                           // Unspecified class of errors, more details are (hopefully) in the returning text
+    ZWORM_WALLET_LOCKED = 2,                         // Wallet was locked
+    ZWORM_COMMIT_FAILED = 3,                         // Commit failed, reset status
+    ZWORM_ERASE_SPENDS_FAILED = 4,                   // Erasing spends during reset failed
+    ZWORM_ERASE_NEW_MINTS_FAILED = 5,                // Erasing new mints during reset failed
+    ZWORM_TRX_FUNDS_PROBLEMS = 6,                    // Everything related to available funds
+    ZWORM_TRX_CREATE = 7,                            // Everything related to create the transaction
+    ZWORM_TRX_CHANGE = 8,                            // Everything related to transaction change
+    ZWORM_TXMINT_GENERAL = 9,                        // General errors in MintToTxIn
+    ZWORM_INVALID_COIN = 10,                         // Selected mint coin is not valid
+    ZWORM_FAILED_ACCUMULATOR_INITIALIZATION = 11,    // Failed to initialize witness
+    ZWORM_INVALID_WITNESS = 12,                      // Spend coin transaction did not verify
+    ZWORM_BAD_SERIALIZATION = 13,                    // Transaction verification failed
+    ZWORM_SPENT_USED_ZWORM = 14,                      // Coin has already been spend
+    ZWORM_TX_TOO_LARGE = 15,                          // The transaction is larger than the max tx size
+    ZWORM_SPEND_V1_SEC_LEVEL                         // Spend is V1 and security level is not set to 100
 };
 
 struct CompactTallyItem {
@@ -215,15 +215,15 @@ public:
     std::string ResetMintZerocoin();
     std::string ResetSpentZerocoin();
     void ReconsiderZerocoins(std::list<CZerocoinMint>& listMintsRestored, std::list<CDeterministicMint>& listDMintsRestored);
-    void ZPivBackupWallet();
+    void ZWormBackupWallet();
     bool GetZerocoinKey(const CBigNum& bnSerial, CKey& key);
-    bool CreateZPIVOutPut(libzerocoin::CoinDenomination denomination, CTxOut& outMint, CDeterministicMint& dMint);
+    bool CreateZWORMOutPut(libzerocoin::CoinDenomination denomination, CTxOut& outMint, CDeterministicMint& dMint);
     bool GetMint(const uint256& hashSerial, CZerocoinMint& mint);
     bool GetMintFromStakeHash(const uint256& hashStake, CZerocoinMint& mint);
     bool DatabaseMint(CDeterministicMint& dMint);
     bool SetMintUnspent(const CBigNum& bnSerial);
     bool UpdateMint(const CBigNum& bnValue, const int& nHeight, const uint256& txid, const libzerocoin::CoinDenomination& denom);
-    string GetUniqueWalletBackupName(bool fzpivAuto) const;
+    string GetUniqueWalletBackupName(bool fzwormAuto) const;
     void InitAutoConvertAddresses();
 
 
@@ -240,7 +240,7 @@ public:
      */
     mutable CCriticalSection cs_wallet;
 
-    CzPIVWallet* zwalletMain;
+    CzWORMWallet* zwalletMain;
 
     std::set<CBitcoinAddress> setAutoConvertAddresses;
 
@@ -248,7 +248,7 @@ public:
     bool fWalletUnlockAnonymizeOnly;
     std::string strWalletFile;
     bool fBackupMints;
-    std::unique_ptr<CzPIVTracker> zpivTracker;
+    std::unique_ptr<CzWORMTracker> zwormTracker;
 
     std::set<int64_t> setKeyPool;
     std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
@@ -333,20 +333,20 @@ public:
         return nZeromintPercentage;
     }
 
-    void setZWallet(CzPIVWallet* zwallet)
+    void setZWallet(CzWORMWallet* zwallet)
     {
         zwalletMain = zwallet;
-        zpivTracker = std::unique_ptr<CzPIVTracker>(new CzPIVTracker(strWalletFile));
+        zwormTracker = std::unique_ptr<CzWORMTracker>(new CzWORMTracker(strWalletFile));
     }
 
-    CzPIVWallet* getZWallet() { return zwalletMain; }
+    CzWORMWallet* getZWallet() { return zwalletMain; }
 
     bool isZeromintEnabled()
     {
         return fEnableZeromint || fEnableAutoConvert;
     }
 
-    void setZPivAutoBackups(bool fEnabled)
+    void setZWormAutoBackups(bool fEnabled)
     {
         fBackupMints = fEnabled;
     }
@@ -679,8 +679,8 @@ public:
     /** MultiSig address added */
     boost::signals2::signal<void(bool fHaveMultiSig)> NotifyMultiSigChanged;
 
-    /** zPIV reset */
-    boost::signals2::signal<void()> NotifyzPIVReset;
+    /** zWORM reset */
+    boost::signals2::signal<void()> NotifyzWORMReset;
 
     /** notify wallet file backed up */
     boost::signals2::signal<void (const bool& fSuccess, const std::string& filename)> NotifyWalletBacked;

@@ -1,17 +1,17 @@
-// Copyright (c) 2018 The PIVX developers
+// Copyright (c) 2018 The WORM developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_ZPIVTRACKER_H
-#define PIVX_ZPIVTRACKER_H
+#ifndef WORM_ZWORMTRACKER_H
+#define WORM_ZWORMTRACKER_H
 
 #include "primitives/zerocoin.h"
 #include <list>
 
 class CDeterministicMint;
-class CzPIVWallet;
+class CzWORMWallet;
 
-class CzPIVTracker
+class CzWORMTracker
 {
 private:
     bool fInitialized;
@@ -20,9 +20,9 @@ private:
     std::map<uint256, uint256> mapPendingSpends; //serialhash, txid of spend
     bool UpdateStatusInternal(const std::set<uint256>& setMempool, CMintMeta& mint);
 public:
-    CzPIVTracker(std::string strWalletFile);
-    ~CzPIVTracker();
-    void Add(const CDeterministicMint& dMint, bool isNew = false, bool isArchived = false, CzPIVWallet* zPIVWallet = NULL);
+    CzWORMTracker(std::string strWalletFile);
+    ~CzWORMTracker();
+    void Add(const CDeterministicMint& dMint, bool isNew = false, bool isArchived = false, CzWORMWallet* zWORMWallet = NULL);
     void Add(const CZerocoinMint& mint, bool isNew = false, bool isArchived = false);
     bool Archive(CMintMeta& meta);
     bool HasPubcoin(const CBigNum& bnValue) const;
@@ -49,4 +49,4 @@ public:
     void Clear();
 };
 
-#endif //PIVX_ZPIVTRACKER_H
+#endif //WORM_ZWORMTRACKER_H
