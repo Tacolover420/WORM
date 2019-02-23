@@ -123,9 +123,9 @@ public:
          * a large 4-byte int at any alignment.
          */
         pchMessageStart[0] = 0x80;
-        pchMessageStart[1] = 0xb4;
-        pchMessageStart[2] = 0x3d;
-        pchMessageStart[3] = 0x19;
+        pchMessageStart[1] = 0xb2;
+        pchMessageStart[2] = 0x3e;
+        pchMessageStart[3] = 0x12;
         vAlertPubKey = ParseHex("0000098d3ba6ba6e7423fa5cbd6a89e0a9a5348f88d332b44a5cb1a8b7ed2c1eaa335fc8dc4f012cb8241cc0bdafd6ca70c5f5448916e4e6f511bcd746ed57dc50");
         nDefaultPort = 51680;
         bnProofOfWorkLimit = ~uint256(0) >> 20; // WORM starting difficulty is 1 / 2^12
