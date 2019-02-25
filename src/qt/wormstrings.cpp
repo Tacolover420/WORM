@@ -272,7 +272,7 @@ QT_TRANSLATE_NOOP("worm-core", "Connect to a node to retrieve peer addresses, an
 QT_TRANSLATE_NOOP("worm-core", "Connection options:"),
 QT_TRANSLATE_NOOP("worm-core", "Copyright (C) 2009-%i The Bitcoin Core Developers"),
 QT_TRANSLATE_NOOP("worm-core", "Copyright (C) 2014-%i The Dash Core Developers"),
-QT_TRANSLATE_NOOP("worm-core", "Copyright (C) 2015-%i The WORM Core Developers"),
+QT_TRANSLATE_NOOP("worm-core", "Copyright (C) 2015-%i The PIVX Core Developers"),
 QT_TRANSLATE_NOOP("worm-core", "Corrupted block database detected"),
 QT_TRANSLATE_NOOP("worm-core", "Could not parse masternode.conf"),
 QT_TRANSLATE_NOOP("worm-core", "Debugging/Testing options:"),

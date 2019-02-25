@@ -3792,7 +3792,7 @@ https://www.transifex.com/worm-project/worm-project-translations</translation>
         <translation>Todos os direitos reservados (C) 2014-%i aos Desenvolvedores do Dash Core</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The WORM Core Developers</source>
+        <source>Copyright (C) 2015-%i The PIVX Core Developers</source>
         <translation>Todos os direitos reservados (C) 2015-%i aos Desenvolvedores do WORM Core</translation>
     </message>
     <message>
