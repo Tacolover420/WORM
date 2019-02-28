@@ -1,11 +1,13 @@
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2018 The PIVX developers
+// Copyright (c) 2019-2019 The WORMS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "masternode-payments.h"
 #include "addrman.h"
 #include "masternode-budget.h"
+#include "masternode-devbudget.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "obfuscation.h"
@@ -250,6 +252,12 @@ bool IsBlockPayeeValid(const CBlock& block, int nBlockHeight)
         }
     }
 
+    // Check devfee payment
+    if (!devbudget.IsTransactionValid(txNew, nBlockHeight)) {
+        LogPrint("masternode","Invalid dev budget payment detected %s\n", txNew.ToString().c_str());
+        return false;
+    }
+
     // If we end here the transaction was either TrxValidationStatus::InValid and Budget enforcement is disabled, or
     // a double budget payment (status = TrxValidationStatus::DoublePayment) was detected, or no/not enough masternode
     // votes (status = TrxValidationStatus::VoteThreshold) for a finalized budget were found
@@ -277,6 +285,7 @@ void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, bool fProofOfStak
         budget.FillBlockPayee(txNew, nFees, fProofOfStake);
     } else {
         masternodePayments.FillBlockPayee(txNew, nFees, fProofOfStake, fZWORMStake);
+        devbudget.FillBlockPayee(txNew, nFees, fProofOfStake);
     }
 }
 
@@ -339,6 +348,11 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
         CBitcoinAddress address2(address1);
 
         LogPrint("masternode","Masternode payment of %s to %s\n", FormatMoney(masternodePayment).c_str(), address2.ToString().c_str());
+    }
+    else {
+        if (!fProofOfStake) {
+            txNew.vout[0].nValue = blockValue;
+        }
     }
 }
 
@@ -543,7 +557,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
         nMasternode_Drift_Count = mnodeman.size() + Params().MasternodeCountDrift();
     }
 
-    CAmount requiredMasternodePayment = GetMasternodePayment(nBlockHeight, nReward, nMasternode_Drift_Count, txNew.IsZerocoinSpend());
+    CAmount requiredMasternodePayment = GetMasternodePayment(nBlockHeight, nReward, nMasternode_Drift_Count, txNew.IsZerocoinSpend()) - GetDevelopersPayment(nBlockHeight);
 
     //require at least 6 signatures
     BOOST_FOREACH (CMasternodePayee& payee, vecPayments)

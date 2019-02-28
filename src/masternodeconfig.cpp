@@ -1,5 +1,6 @@
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2017 The PIVX developers
+// Copyright (c) 2019-2019 WORMS developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -69,14 +70,14 @@ bool CMasternodeConfig::read(std::string& strErr)
         }
 
         if (Params().NetworkID() == CBaseChainParams::MAIN) {
-            if (port != 51472) {
+            if (port != Params().GetDefaultPort()) {
                 strErr = _("Invalid port detected in masternode.conf") + "\n" +
                          strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"" + "\n" +
                          _("(must be 51472 for mainnet)");
                 streamConfig.close();
                 return false;
             }
-        } else if (port == 51472) {
+        } else if (port == Params().GetDefaultPort()) {
             strErr = _("Invalid port detected in masternode.conf") + "\n" +
                      strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"" + "\n" +
                      _("(51472 could be used only on mainnet)");
