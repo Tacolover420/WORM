@@ -110,7 +110,7 @@ public:
     int Zerocoin_StartHeight() const { return nZerocoinStartHeight; }
     int Zerocoin_StartTime() const { return nZerocoinStartTime; }
     int Zerocoin_Block_V2_Start() const { return nBlockZerocoinV2; }
-    // GGR
+    // WORM
     /** Number of halving reward block */
     int SubsidyHalvingBlock() const { return nSubsidyHalvingBlock; }
     /** Masternode colleteral value */
