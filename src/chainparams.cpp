@@ -126,7 +126,7 @@ public:
         nMaxMoneyOut = 21000000 * COIN;
 
         nMasternodeCollateral = 1000;
-        strDevFeeAddress = "gGxLHq2q8wbpgD9x6qZvyQYG4aDSnQVHoV";
+        strDevFeeAddress = "WcjVuRXirncqRW9MmiXCeUpGhKBqAChmpy";
 
         /** Height or Time Based Activations **/
         nLastPOWBlock = 100000;
@@ -187,7 +187,7 @@ public:
 
         nPoolMaxTransactions = 3;
         strSporkKey = "04fd049241286bde7d98d186bdf89ac4b51eb637618c5e947eae56c1198cc1e011351ef0412636feba3eb533ddb45f275392eff2074b5cfb329b84e2521406655d";
-        strObfuscationPoolDummyAddress = "D87q2gC9j6nNrnzCsg4aY6bHMLsT9nUhEw";
+        strObfuscationPoolDummyAddress = "WcjVuRXirncqRW9MmiXCeUpGhKBqAChmpy";
         nStartMasternodePayments = 1547119800; //Wed, 25 Jun 2014 20:36:16 GMT
 
         /** Zerocoin */
